@@ -6,7 +6,7 @@ This is a single-page test application, built with:
   - ASP.NET Core and C# for cross-platform server-side code
   - Angular and TypeScript for client-side code
   - Webpack for building and bundling client-side resources
-  - Angular material for layout and styling
+  - Bootstrap for layout and styling
 
 This should serve as a starting point for other projects with ASP.NET Core + Angular setup. This project will test some framework-related stuff.
 
@@ -20,8 +20,8 @@ This should serve as a starting point for other projects with ASP.NET Core + Ang
 # Setup
 To set up a project with ASP.NET Core + Angular, you have to follow the steps below:
 1) Open Command prompt
-2) cd to your projects folder
-3) dotnet new --install Microsoft.AspNetCore.SpaTemplates::* (install SPA Templates for ASP.NET Core if you don't have them)
+2) dotnet new --install Microsoft.AspNetCore.SpaTemplates::* (install SPA Templates for ASP.NET Core if you don't have them)
+3) cd to your projects folder
 4) mkdir NewAngularProj
 5) cd NewAngularProj
 6) dotnet new angular (this also works for React or Vue - dotnet new will show all available options)

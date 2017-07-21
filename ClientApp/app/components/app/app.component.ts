@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
     styleUrls: ['./app.css']
 })
 
-export class AppComponent {
-    name = 'World'
-}
+export class AppComponent {}

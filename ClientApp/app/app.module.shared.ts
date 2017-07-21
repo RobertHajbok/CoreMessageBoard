@@ -5,7 +5,9 @@ import { AppComponent } from './components/app/app.component'
 import { HomeComponent } from './components/home/home.component';
 
 export const sharedConfig: NgModule = {
-    bootstrap: [ AppComponent ],
+    bootstrap: [
+        AppComponent
+    ],
     declarations: [
         AppComponent,
         HomeComponent

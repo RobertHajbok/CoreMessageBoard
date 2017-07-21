@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { MaterialModule } from '@angular/material';
 
 import { AppComponent } from './components/app/app.component'
 import { HomeComponent } from './components/home/home.component';
@@ -17,6 +18,7 @@ export const sharedConfig: NgModule = {
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
             { path: '**', redirectTo: 'home' }
-        ])
+        ]),
+        MaterialModule
     ]
 };

@@ -6,7 +6,7 @@ This is a single-page test application, built with:
   - ASP.NET Core and C# for cross-platform server-side code
   - Angular and TypeScript for client-side code
   - Webpack for building and bundling client-side resources
-  - Bootstrap for layout and styling
+  - Angular Material for layout and styling
 
 This should serve as a starting point for other projects with ASP.NET Core + Angular setup. This project will test some framework-related stuff.
 

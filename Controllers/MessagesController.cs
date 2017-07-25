@@ -27,10 +27,17 @@ namespace CoreMessageBoard.Controllers
             return messages;
         }
 
+        [HttpGet("{name}")]
+        public IEnumerable<Message> Get(string name)
+        {
+            return messages.FindAll(x => x.Owner == name);
+        }
+
         [HttpPost]
-        public void Post([FromBody] Message message)
+        public Message Post([FromBody] Message message)
         {
             messages.Add(message);
+            return message;
         }
     }
 }

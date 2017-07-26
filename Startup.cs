@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using CoreMessageBoard.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -29,6 +27,7 @@ namespace CoreMessageBoard
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            services.AddDbContext<ApiContext>(opt => opt.UseInMemoryDatabase());
             services.AddMvc();
         }
 
@@ -41,7 +40,8 @@ namespace CoreMessageBoard
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
                     HotModuleReplacement = true
                 });
             }
@@ -62,6 +62,29 @@ namespace CoreMessageBoard
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
+
+            SeedData(app.ApplicationServices.GetService<ApiContext>());
+        }
+
+        public void SeedData(ApiContext context)
+        {
+            context.Messages.Add(new Message
+            {
+                Owner = "John",
+                Text = "hello"
+            });
+            context.Messages.Add(new Message
+            {
+                Owner = "Tim",
+                Text = "Hi"
+            });
+            context.Users.Add(new User
+            {
+                Email = "a",
+                FirstName = "Tim",
+                Password = "a"
+            });
+            context.SaveChanges();
         }
     }
 }

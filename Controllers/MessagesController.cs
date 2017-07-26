@@ -1,6 +1,7 @@
 using CoreMessageBoard.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CoreMessageBoard.Controllers
 {
@@ -8,36 +9,30 @@ namespace CoreMessageBoard.Controllers
     [Route("api/[controller]")]
     public class MessagesController : Controller
     {
-        static List<Message> messages = new List<Message>
+        private readonly ApiContext context;
+
+        public MessagesController(ApiContext context)
         {
-            new Message
-            {
-                Owner = "John",
-                Text = "hello"
-            },
-            new Message
-            {
-                Owner = "Tim",
-                Text = "Hi"
-            }
-        };
+            this.context = context;
+        }
 
         public IEnumerable<Message> Get()
         {
-            return messages;
+            return context.Messages;
         }
 
         [HttpGet("{name}")]
         public IEnumerable<Message> Get(string name)
         {
-            return messages.FindAll(x => x.Owner == name);
+            return context.Messages.Where(x => x.Owner == name);
         }
 
         [HttpPost]
         public Message Post([FromBody] Message message)
         {
-            messages.Add(message);
-            return message;
+            var dbMessage = context.Messages.Add(message).Entity;
+            context.SaveChanges();
+            return dbMessage;
         }
     }
 }

@@ -1,5 +1,9 @@
 <md-toolbar color="primary">
     <button md-button routerLink="/">Message Board</button>
     <button md-button routerLink="/messages">Messages</button>
-    <button md-button routerLink="/register">Register</button>
+    <span class="span-flex"></span>
+    <button *ngIf="!auth.isAuthenticated" md-button routerLink="/login">Login</button>
+    <button *ngIf="!auth.isAuthenticated" md-button routerLink="/register">Register</button>
+    <button *ngIf="auth.isAuthenticated" md-button routerLink="/">Welcome {{auth.name}}</button>
+    <button *ngIf="auth.isAuthenticated" md-button (click)="auth.logout()">Logout</button>
 </md-toolbar>

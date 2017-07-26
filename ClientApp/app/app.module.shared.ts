@@ -10,6 +10,7 @@ import { MessagesComponent } from './components/messages/messages.component';
 import { NavComponent } from './components/nav/nav.component';
 import { NewMessageComponent } from './components/new-message/new-message.component';
 import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
 
 export const sharedConfig: NgModule = {
     bootstrap: [
@@ -21,14 +22,16 @@ export const sharedConfig: NgModule = {
         MessagesComponent,
         NavComponent,
         NewMessageComponent,
-        RegisterComponent
+        RegisterComponent,
+        LoginComponent
     ],
     imports: [
         RouterModule.forRoot([
             { path: '', component: HomeComponent },
             { path: 'messages', component: MessagesComponent },
             { path: 'messages/:name', component: MessagesComponent },
-            { path: 'register', component: RegisterComponent }
+            { path: 'register', component: RegisterComponent },
+            { path: 'login', component: LoginComponent }
         ]),
         MaterialModule,
         FormsModule,

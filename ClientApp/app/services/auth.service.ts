@@ -1,5 +1,5 @@
 ﻿import { Inject, Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Headers, Http, RequestOptions } from '@angular/http';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -8,14 +8,20 @@ export class AuthService {
     private nameKey = 'name';
     private tokenKey = 'token';
 
-    constructor(private http: Http, private router: Router, @Inject('ORIGIN_URL') private originUrl: string) { }
+    constructor(private http: Http, private router: Router, @Inject('ORIGIN_URL') private originUrl: string,
+        @Inject('LOCAL_STORAGE') private localStorage: any) { }
 
     get name() {
-        return localStorage.getItem(this.nameKey);
+        return this.localStorage.getItem(this.nameKey);
     }
 
     get isAuthenticated() {
-        return !!localStorage.getItem(this.tokenKey);
+        return !!this.localStorage.getItem(this.tokenKey);
+    }
+
+    get tokenHeader() {
+        var header = new Headers({ 'Authorization': 'Bearer ' + this.localStorage.getItem(this.tokenKey) });
+        return new RequestOptions({ headers: header });
     }
 
     register(user) {
@@ -30,10 +36,10 @@ export class AuthService {
             this.authenticate(res);
         });
     }
-    
+
     logout() {
-        localStorage.removeItem(this.tokenKey);
-        localStorage.removeItem(this.nameKey);
+        this.localStorage.removeItem(this.tokenKey);
+        this.localStorage.removeItem(this.nameKey);
     }
 
     authenticate(res) {
@@ -41,8 +47,8 @@ export class AuthService {
         if (!authResponse.token)
             return;
 
-        localStorage.setItem(this.tokenKey, authResponse.token);
-        localStorage.setItem(this.nameKey, authResponse.firstName);
+        this.localStorage.setItem(this.tokenKey, authResponse.token);
+        this.localStorage.setItem(this.nameKey, authResponse.firstName);
         this.router.navigate(['/']);
     }
 }

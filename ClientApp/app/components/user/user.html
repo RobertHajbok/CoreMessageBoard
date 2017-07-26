@@ -1,0 +1,9 @@
+<md-card class="card">
+    <md-input-container>
+        <input mdInput [(ngModel)]="model.firstName" placeholder="First Name" />
+    </md-input-container>
+    <md-input-container>
+        <input mdInput [(ngModel)]="model.lastName" placeholder="Last Name" />
+    </md-input-container>
+    <button md-raised-button color="primary" (click)="saveUser(model)">Save Changes</button>
+</md-card>

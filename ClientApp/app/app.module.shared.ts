@@ -11,6 +11,10 @@ import { NavComponent } from './components/nav/nav.component';
 import { NewMessageComponent } from './components/new-message/new-message.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
+import { UserComponent } from './components/user/user.component';
+
+import { AuthService } from './services/auth.service';
+import { WebService } from './services/web.service';
 
 export const sharedConfig: NgModule = {
     bootstrap: [
@@ -23,7 +27,8 @@ export const sharedConfig: NgModule = {
         NavComponent,
         NewMessageComponent,
         RegisterComponent,
-        LoginComponent
+        LoginComponent,
+        UserComponent
     ],
     imports: [
         RouterModule.forRoot([
@@ -31,11 +36,16 @@ export const sharedConfig: NgModule = {
             { path: 'messages', component: MessagesComponent },
             { path: 'messages/:name', component: MessagesComponent },
             { path: 'register', component: RegisterComponent },
-            { path: 'login', component: LoginComponent }
+            { path: 'login', component: LoginComponent },
+            { path: 'user', component: UserComponent }
         ]),
         MaterialModule,
         FormsModule,
         ReactiveFormsModule,
         NoopAnimationsModule
+    ],
+    providers: [
+        AuthService,
+        WebService
     ]
 };

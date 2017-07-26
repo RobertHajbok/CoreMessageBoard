@@ -4,6 +4,8 @@ import { MdSnackBar } from '@angular/material';
 import { Subject } from 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
 
+import { AuthService } from './auth.service';
+
 @Injectable()
 export class WebService {
 
@@ -11,7 +13,7 @@ export class WebService {
     private messageSubject = new Subject();
     messages = this.messageSubject.asObservable();
 
-    constructor(private http: Http, private sb: MdSnackBar, @Inject('ORIGIN_URL') private originUrl: string) {
+    constructor(private http: Http, private sb: MdSnackBar, private auth: AuthService, @Inject('ORIGIN_URL') private originUrl: string) {
         this.getMessages(null);
     }
 
@@ -33,6 +35,14 @@ export class WebService {
         } catch (e) {
             this.errorHandling("Unable to post message");
         }
+    }
+
+    getUser() {
+        return this.http.get(this.originUrl + '/api/users/me', this.auth.tokenHeader).map(res => res.json());
+    }
+
+    saveUser(userData) {
+        return this.http.post(this.originUrl + '/api/users/me', userData, this.auth.tokenHeader).map(res => res.json());
     }
 
     private errorHandling(error) {

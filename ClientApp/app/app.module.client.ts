@@ -12,7 +12,8 @@ import { sharedConfig } from './app.module.shared';
         ...sharedConfig.imports
     ],
     providers: [
-        { provide: 'ORIGIN_URL', useValue: location.origin }
+        { provide: 'ORIGIN_URL', useValue: location.origin },
+        { provide: 'LOCAL_STORAGE', useValue: localStorage }
     ]
 })
 export class AppModule {

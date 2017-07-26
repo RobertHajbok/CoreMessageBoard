@@ -1,0 +1,23 @@
+<md-card>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <md-input-container>
+            <input class="wide-input" mdInput placeholder="First Name" formControlName="firstName" />
+        </md-input-container>
+        <md-input-container>
+            <input class="wide-input" mdInput placeholder="Last Name" formControlName="lastName" />
+        </md-input-container>
+        <md-input-container>
+            <input class="wide-input" type="email" mdInput placeholder="Email" formControlName="email" />
+        </md-input-container>
+        <md-input-container>
+            <input class="wide-input" type="password" mdInput placeholder="Password" formControlName="password" />
+        </md-input-container>
+        <md-input-container>
+            <input class="wide-input" type="password" mdInput placeholder="Confirm Password" formControlName="confirmPassword" />
+        </md-input-container>
+        <br />
+        <span *ngIf="form.errors?.mismatchedFields">Password do not match</span>
+        <br />
+        <button md-raised-button color="primary">Register</button>
+    </form>
+</md-card>

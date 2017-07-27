@@ -13,7 +13,7 @@ import { sharedConfig } from './app.module.shared';
     ],
     providers: [
         { provide: 'ORIGIN_URL', useValue: location.origin },
-        { provide: 'LOCAL_STORAGE', useValue: localStorage }
+        ...sharedConfig.providers
     ]
 })
 export class AppModule {

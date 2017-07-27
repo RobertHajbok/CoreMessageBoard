@@ -5,22 +5,25 @@ import { Router } from '@angular/router';
 @Injectable()
 export class AuthService {
 
-    private nameKey = 'name';
-    private tokenKey = 'token';
+    // Local storage should be normally injected because server does not know
+    // anything about it. This is just a simple implementation for testing
+    private localStorage = {
+        name: '',
+        token: ''
+    }
 
-    constructor(private http: Http, private router: Router, @Inject('ORIGIN_URL') private originUrl: string,
-        @Inject('LOCAL_STORAGE') private localStorage: any) { }
+    constructor(private http: Http, private router: Router, @Inject('ORIGIN_URL') private originUrl: string) { }
 
     get name() {
-        return this.localStorage.getItem(this.nameKey);
+        return this.localStorage.name;
     }
 
     get isAuthenticated() {
-        return !!this.localStorage.getItem(this.tokenKey);
+        return !!this.localStorage.token;
     }
 
     get tokenHeader() {
-        var header = new Headers({ 'Authorization': 'Bearer ' + this.localStorage.getItem(this.tokenKey) });
+        var header = new Headers({ 'Authorization': 'Bearer ' + this.localStorage.token });
         return new RequestOptions({ headers: header });
     }
 
@@ -38,8 +41,8 @@ export class AuthService {
     }
 
     logout() {
-        this.localStorage.removeItem(this.tokenKey);
-        this.localStorage.removeItem(this.nameKey);
+        this.localStorage.token = null;
+        this.localStorage.name = null;
     }
 
     authenticate(res) {
@@ -47,8 +50,8 @@ export class AuthService {
         if (!authResponse.token)
             return;
 
-        this.localStorage.setItem(this.tokenKey, authResponse.token);
-        this.localStorage.setItem(this.nameKey, authResponse.firstName);
+        this.localStorage.token = authResponse.token;
+        this.localStorage.name = authResponse.firstName;
         this.router.navigate(['/']);
     }
 }

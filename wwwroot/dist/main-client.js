@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "9978de72f174522e5207"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "c34bf81097b960dd2f1b"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -937,31 +937,34 @@ var core_1 = __webpack_require__(7);
 var http_1 = __webpack_require__(28);
 var router_1 = __webpack_require__(35);
 var AuthService = (function () {
-    function AuthService(http, router, originUrl, localStorage) {
+    function AuthService(http, router, originUrl) {
         this.http = http;
         this.router = router;
         this.originUrl = originUrl;
-        this.localStorage = localStorage;
-        this.nameKey = 'name';
-        this.tokenKey = 'token';
+        // Local storage should be normally injected because server does not know
+        // anything about it. This is just a simple implementation for testing
+        this.localStorage = {
+            name: '',
+            token: ''
+        };
     }
     Object.defineProperty(AuthService.prototype, "name", {
         get: function () {
-            return this.localStorage.getItem(this.nameKey);
+            return this.localStorage.name;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(AuthService.prototype, "isAuthenticated", {
         get: function () {
-            return !!this.localStorage.getItem(this.tokenKey);
+            return !!this.localStorage.token;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(AuthService.prototype, "tokenHeader", {
         get: function () {
-            var header = new http_1.Headers({ 'Authorization': 'Bearer ' + this.localStorage.getItem(this.tokenKey) });
+            var header = new http_1.Headers({ 'Authorization': 'Bearer ' + this.localStorage.token });
             return new http_1.RequestOptions({ headers: header });
         },
         enumerable: true,
@@ -981,15 +984,15 @@ var AuthService = (function () {
         });
     };
     AuthService.prototype.logout = function () {
-        this.localStorage.removeItem(this.tokenKey);
-        this.localStorage.removeItem(this.nameKey);
+        this.localStorage.token = null;
+        this.localStorage.name = null;
     };
     AuthService.prototype.authenticate = function (res) {
         var authResponse = res.json();
         if (!authResponse.token)
             return;
-        this.localStorage.setItem(this.tokenKey, authResponse.token);
-        this.localStorage.setItem(this.nameKey, authResponse.firstName);
+        this.localStorage.token = authResponse.token;
+        this.localStorage.name = authResponse.firstName;
         this.router.navigate(['/']);
     };
     return AuthService;
@@ -997,8 +1000,7 @@ var AuthService = (function () {
 AuthService = __decorate([
     core_1.Injectable(),
     __param(2, core_1.Inject('ORIGIN_URL')),
-    __param(3, core_1.Inject('LOCAL_STORAGE')),
-    __metadata("design:paramtypes", [http_1.Http, router_1.Router, String, Object])
+    __metadata("design:paramtypes", [http_1.Http, router_1.Router, String])
 ], AuthService);
 exports.AuthService = AuthService;
 
@@ -33777,9 +33779,8 @@ AppModule = __decorate([
             http_1.HttpModule
         ].concat(app_module_shared_1.sharedConfig.imports),
         providers: [
-            { provide: 'ORIGIN_URL', useValue: location.origin },
-            { provide: 'LOCAL_STORAGE', useValue: localStorage }
-        ]
+            { provide: 'ORIGIN_URL', useValue: location.origin }
+        ].concat(app_module_shared_1.sharedConfig.providers)
     })
 ], AppModule);
 exports.AppModule = AppModule;
@@ -33934,8 +33935,7 @@ LoginComponent = __decorate([
     core_1.Component({
         selector: 'login',
         template: __webpack_require__(117),
-        styles: [__webpack_require__(382)],
-        providers: [auth_service_1.AuthService]
+        styles: [__webpack_require__(382)]
     }),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], LoginComponent);
@@ -33969,7 +33969,6 @@ var MessagesComponent = (function () {
     MessagesComponent.prototype.ngOnInit = function () {
         var name = this.route.snapshot.params.name;
         this.webService.getMessages(name);
-        this.webService.getUser().subscribe();
     };
     return MessagesComponent;
 }());
@@ -33977,8 +33976,7 @@ MessagesComponent = __decorate([
     core_1.Component({
         selector: 'messages',
         template: __webpack_require__(118),
-        styles: [__webpack_require__(383)],
-        providers: [web_service_1.WebService]
+        styles: [__webpack_require__(383)]
     }),
     __metadata("design:paramtypes", [web_service_1.WebService, router_1.ActivatedRoute])
 ], MessagesComponent);
@@ -34013,8 +34011,7 @@ NavComponent = __decorate([
     core_1.Component({
         selector: 'nav',
         template: __webpack_require__(119),
-        styles: [__webpack_require__(384)],
-        providers: [auth_service_1.AuthService]
+        styles: [__webpack_require__(384)]
     }),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], NavComponent);
@@ -34058,11 +34055,7 @@ NewMessageComponent = __decorate([
     core_1.Component({
         selector: 'new-message',
         template: __webpack_require__(120),
-        styles: [__webpack_require__(385)],
-        providers: [
-            web_service_1.WebService,
-            auth_service_1.AuthService
-        ]
+        styles: [__webpack_require__(385)]
     }),
     __metadata("design:paramtypes", [web_service_1.WebService, auth_service_1.AuthService])
 ], NewMessageComponent);
@@ -34110,8 +34103,7 @@ RegisterComponent = __decorate([
     core_1.Component({
         selector: 'register',
         template: __webpack_require__(121),
-        styles: [__webpack_require__(386)],
-        providers: [auth_service_1.AuthService]
+        styles: [__webpack_require__(386)]
     }),
     __metadata("design:paramtypes", [forms_1.FormBuilder, auth_service_1.AuthService])
 ], RegisterComponent);
@@ -34166,8 +34158,7 @@ UserComponent = __decorate([
     core_1.Component({
         selector: 'user',
         template: __webpack_require__(122),
-        styles: [__webpack_require__(387)],
-        providers: [web_service_1.WebService]
+        styles: [__webpack_require__(387)]
     }),
     __metadata("design:paramtypes", [web_service_1.WebService])
 ], UserComponent);

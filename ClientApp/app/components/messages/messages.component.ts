@@ -5,8 +5,7 @@ import { WebService } from '../../services/web.service';
 @Component({
     selector: 'messages',
     templateUrl: './messages.html',
-    styleUrls: ['./messages.css'],
-    providers: [WebService]
+    styleUrls: ['./messages.css']
 })
 
 export class MessagesComponent {
@@ -15,6 +14,5 @@ export class MessagesComponent {
     ngOnInit() {
         var name = this.route.snapshot.params.name;
         this.webService.getMessages(name);
-        this.webService.getUser().subscribe();
     }
 }

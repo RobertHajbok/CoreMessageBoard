@@ -5,11 +5,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
     selector: 'new-message',
     templateUrl: './new-message.html',
-    styleUrls: ['./new-message.css'],
-    providers: [
-        WebService,
-        AuthService
-    ]
+    styleUrls: ['./new-message.css']
 })
 
 export class NewMessageComponent {
